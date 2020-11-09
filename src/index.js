@@ -7,10 +7,12 @@ import {
   useQuery,
 } from '@apollo/client';
 
+import { mockedServer } from './server/';
+
 // initialize a GraphQL client
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  uri: 'https://countries.trevorblades.com'
+  uri: `${process.env.REACT_APP_API}`
 });
 
 // write a GraphQL query that asks for names and codes for all countries
@@ -22,6 +24,10 @@ const LIST_COUNTRIES = gql`
     }
   }
 `;
+
+if (process.env.NODE_ENV === 'development') {
+  mockedServer(); 
+}
 
 // create a component that renders a select input for coutries
 function CountrySelect() {
